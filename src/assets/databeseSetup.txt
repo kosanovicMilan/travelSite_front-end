@@ -1,0 +1,92 @@
+use milanTravel;
+
+Create table User(
+	user_id int auto_increment primary key,
+    name varchar(50) not null,
+    surrname varchar(50) not null,
+    type varchar(50) not null,
+    password varchar(50) not null,
+    email varchar(50) not null
+);
+
+CREATE TABLE Destination (
+    destination_id INT AUTO_INCREMENT PRIMARY KEY,
+    name varchar(50) not null,
+    country varchar(40) not null,
+    description varchar(400) not null
+);
+
+create table Activity(
+	activity_id Int auto_increment Primary key,
+    name varchar(255) not null,
+    destination_id int,
+	foreign Key (destination_id) References Destination(destination_id) ON delete cascade
+);
+
+
+Create table Article(
+	article_id INT auto_increment Primary key,
+    title varchar(50) not null,
+    text varchar(500) not null,
+    created_on date not null,
+    activity_id int,
+    author_id int,
+    destination_id int,
+    foreign key (activity_id) References Activity(activity_id) on delete cascade,
+    foreign Key (author_id) References User(user_id) ON delete cascade,
+    foreign Key (destination_id) References Destination(destination_id) ON delete cascade
+);
+
+create table Comment(
+	comment_id int auto_increment primary key,
+    text varchar(400) not null,
+    writer varchar(250) not null,
+    created_on date not null,
+    article_id int,
+    foreign key (article_id) references Article(article_id) on delete cascade
+);
+
+-- Ubacivanje podataka u tabelu User
+INSERT INTO User (name, surrname, type, password, email)
+VALUES 
+('Milan', 'Jovanović', 'Admin', 'password123', 'milan.jovanovic@example.com'),
+('Ana', 'Petrović', 'User', 'ana2024', 'ana.petrovic@example.com'),
+('Magdalena','Jovic','Admin','magdajena','magdalena@example.com'),
+('Jelena', 'Marković', 'User', 'jelena321', 'jelena.markovic@example.com'),
+('Ivan', 'Ilić', 'Admin', 'ivanpass', 'ivan.ilic@example.com');
+
+-- Ubacivanje podataka u tabelu Destination
+INSERT INTO Destination (name, country, description)
+VALUES 
+('Beograd', 'Srbija', 'Glavni grad Srbije, poznat po svojoj bogatoj istoriji i noćnom životu.'),
+('Novi Sad', 'Srbija', 'Grad na Dunavu, poznat po Petrovaradinskoj tvrđavi i Exit festivalu.'),
+('Niš', 'Srbija', 'Grad na jugu Srbije, poznat po Niškoj tvrđavi i medijskom centru.'),
+('Kragujevac', 'Srbija', 'Prvi glavni grad moderne Srbije, poznat po svojoj industriji.'),
+('Subotica', 'Srbija', 'Grad na severu Srbije, poznat po art nouveau arhitekturi.');
+
+-- Ubacivanje podataka u tabelu Activity
+INSERT INTO Activity (name, destination_id)
+VALUES 
+('Obilazak Kalemegdana', 1),
+('Šetnja po Keju', 2),
+('Poseta Niškoj Tvrđavi', 3),
+('Obilazak muzeja u Kragujevcu', 4),
+('Šetnja kroz Palićki park', 5);
+
+-- Ubacivanje podataka u tabelu Article
+INSERT INTO Article (title, text, created_on, activity_id, author_id, destination_id)
+VALUES 
+('Najlepši delovi Beograda', 'Ovaj članak pokriva najlepše delove Beograda koje morate posetiti.', '2024-08-01', 1, 1, 1),
+('Šetnja po Novom Sadu', 'Uživajte u šetnji po Novom Sadu, gradu na Dunavu.', '2024-08-02', 2, 2, 2),
+('Istorija Niške Tvrđave', 'Otkrijte bogatu istoriju Niške Tvrđave.', '2024-08-03', 3, 3, 3),
+('Kultura Kragujevca', 'Istražite kulturne znamenitosti Kragujevca.', '2024-08-04', 4, 4, 4),
+('Poseta Subotici', 'Subotica je grad bogate arhitekture i kulture.', '2024-08-05', 5, 5, 5);
+
+-- Ubacivanje podataka u tabelu Comment
+INSERT INTO Comment (text, writer, created_on, article_id)
+VALUES 
+('Odličan članak o Beogradu!', 'Marko', '2024-08-06', 1),
+('Veoma korisne informacije o Novom Sadu.', 'Sara', '2024-08-07', 2),
+('Hvala na detaljnom opisu Niške Tvrđave!', 'Miloš', '2024-08-08', 3),
+('Kragujevac je fascinantan grad!', 'Ivana', '2024-08-09', 4),
+('Subotica je uvek bila moj omiljeni grad.', 'Aleksandar', '2024-08-10', 5);

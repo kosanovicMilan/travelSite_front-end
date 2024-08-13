@@ -10,16 +10,20 @@ import router from '@/router';
 // axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 
 let config = {
-  baseURL: 'http://localhost:8080'
+  baseURL: 'http://localhost:8080',
   // timeout: 60 * 1000, // Timeout
-  // withCredentials: true, // Check cross-site Access-Control
+  //withCredentials: true, // Check cross-site Access-Control
 };
 
 const _axios = axios.create(config);
 
 _axios.interceptors.request.use(
   function(config) {
-    // Do something before request is sent
+    const jwt = localStorage.getItem('jwt');
+    if (jwt != null) {
+      config.headers.Authorization = `Bearer ${jwt}`;
+    }
+    console.log( config.headers.Authorization +' PLUS'+config)
     return config;
   },
   function(error) {
@@ -36,6 +40,12 @@ _axios.interceptors.response.use(
   },
   function(error) {
     // Do something with response error
+
+    if (error && error.response && error.response.status === 401) {
+      // window.location = '/login'
+      router.push({name: 'LoginPage'});
+    }
+
     return Promise.reject(error);
   }
 );

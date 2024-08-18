@@ -30,7 +30,79 @@ const routes = [
     path: '/login',
     name: 'LoginPage',
     component: () => import('../views/LoginPage.vue')
+  },
+  {
+    path: '/articles',
+    name: 'AllArticles',
+    meta: {
+      authRequired: true,
+    },
+    component: () => import('../views/AllArticles.vue')
+  },{
+    path: '/articles/destiantion/:destinationName',
+    name: 'ArticleByDestination',
+    meta: {
+      authRequired: true,
+    },
+    component: () => import('../views/ArticleByDestination.vue')
+  },
+  {
+    path: '/destination/edit/:destinationId',
+    name: 'EditDestination',
+    meta: {
+      authRequired: true,
+    },
+    component: () => import('../views/EditDestination.vue')
+  },
+  {
+    path: '/users',
+    name: 'AllUsers',
+    meta:{
+      authRequired: true,
+    },
+    component: () => import('../views/AllUsers.vue')
+  },
+  {
+    path: '/users/edit/:userId',
+    name: 'EditUser',
+    meta:{
+      authRequired: true,
+    },
+    component: () => import('../views/EditUser.vue')
+  },
+  {
+    path: '/destination/addNew',
+    name: 'AddDestination',
+    meta:{
+      authRequired: true,
+    },
+    component: () => import('../views/AddDestination.vue')
+  },
+  {
+    path: '/user/addNew',
+    name: 'AddNewUser',
+    meta:{
+      authRequired: true,
+    },
+    component: () => import('../views/AddNewUser.vue')
+  },
+  {
+    path: '/article/edit/:articleId',
+    name: 'EditArticle',
+    meta:{
+      authRequired: true,
+    },
+    component: () => import('../views/EditArticle.vue')
+  },
+  {
+    path: '/article/addNew',
+    name: 'AddNewArticle',
+    meta:{
+      authRequired: true,
+    },
+    component: () => import('../views/AddNewArticle.vue')
   }
+  
 ]
 
 const router = new VueRouter({
@@ -57,6 +129,7 @@ router.beforeEach( function(to,from,next){
     const jwt = localStorage.getItem('jwt')
 
     if (!jwt) {
+      alert("You are unotorized for that action!")
       next({name: 'LoginPage'});
       return;
     }

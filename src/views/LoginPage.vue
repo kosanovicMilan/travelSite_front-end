@@ -1,6 +1,6 @@
 <template>
     <div class="pt-5">
-      <h1 v-if="email">Hello, {{email}}</h1>
+      <h1>Welcome to Log In page, please log in to continue!</h1>
       <form @submit.prevent="login">
         <div class="form-group">
           <label for="email">Email</label>
@@ -32,7 +32,13 @@
         }).then(response => {
           localStorage.setItem('jwt', response.data.jwt)
           this.$router.push({name: 'home'});
-        })
+        }).catch(error => {
+          if (error.response && error.response.status === 422) {
+           alert("Wrong email or password!");
+           } else {
+              alert("An error occurred: " + error.message);
+            }
+          });
       }
     },
   }

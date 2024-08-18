@@ -30,7 +30,14 @@ Vue.filter('capitalize', function(value) {
   value = value.toString();
 
   return value.charAt(0).toUpperCase() + value.slice(1)
-})
+});
+
+Vue.filter('formatDate', function(value) {
+  if (value) {
+    const date = new Date(value);
+    return date.toLocaleDateString('en-GB'); // ili en-US za US format
+  }
+});
 
 new Vue({
   router,

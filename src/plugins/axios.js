@@ -23,7 +23,7 @@ _axios.interceptors.request.use(
     if (jwt != null) {
       config.headers.Authorization = `Bearer ${jwt}`;
     }
-    console.log( config.headers.Authorization +' PLUS'+config)
+    //console.log( config.headers.Authorization +' PLUS'+config)
     return config;
   },
   function(error) {
@@ -43,6 +43,7 @@ _axios.interceptors.response.use(
 
     if (error && error.response && error.response.status === 401) {
       // window.location = '/login'
+      alert("You are unautharized for that action!");
       router.push({name: 'LoginPage'});
     }
 

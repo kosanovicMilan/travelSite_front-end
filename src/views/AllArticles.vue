@@ -1,6 +1,6 @@
 <template>
-  <div class="destinations">
-    <h1 class="mt-4">Destinations</h1>
+  <div class="articles">
+    <h1 class="mt-4">Articles</h1>
 
     <div class="row">
       <div class="col-12">
@@ -8,34 +8,40 @@
           <thead>
             <tr>
               <th scope="col">ID</th>
-              <th scope="col">Name</th>
-              <th scope="col">Country</th>
+              <th scope="col">Title</th>
+              <th scope="col">Description</th>
+              <th scope="col">Date of creation</th>
+              <th scope="col">Author</th>
+              <th scope="col">Activity</th>
+              <th scope="col">Destination</th>
               <th scope="col">Actions</th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="destination in paginatedDestinations" :key="destination.destination_id">
-              <th scope="row">{{ destination.destination_id }}</th>
-              <td>
-                <router-link :to="{ name: 'ArticleByDestination', params: { destinationName: destination.name } }">
-                  {{ destination.name | capitalize }}
-                </router-link>
-              </td>
-              <td>{{ destination.country }}</td>
+            <tr v-for="article in paginatedArticles" :key="article.article_id">
+              <th scope="row">{{ article.article_id }}</th>
+              <router-link :to="{ name: 'blog', params: { articleID: article.article_id } }" class = "text-truncate">
+                {{ article.title | capitalize }}
+              </router-link>
+              <td>{{ article.text }}</td>
+              <td>{{ article.created_on | formatDate }}</td>
+              <td>{{ article.authorName }}</td>
+              <td>{{ article.activityName }}</td>
+              <td>{{ article.destinationName }}</td>
               <td>
                 <!-- Edit Button -->
-                <router-link :to="{ name: 'EditDestination', params: { destinationId: destination.destination_id } }" class="btn btn-warning btn-sm">
+                <router-link :to="{ name: 'EditArticle', params: { articleId: article.article_id } }" class="btn btn-warning btn-sm">
                   Edit
                 </router-link>
                 <!-- Delete Button -->
-                <button @click="deleteDestination(destination.destination_id)" class="btn btn-danger btn-sm">
+                <button @click="deleteArticle(article.article_id)" class="btn btn-danger btn-sm">
                   Delete
                 </button>
               </td>
             </tr>
           </tbody>
         </table>
-        <!-- Paginacija -->
+        <!-- Pagination -->
         <nav aria-label="Page navigation">
           <ul class="pagination">
             <li class="page-item" :class="{ disabled: currentPage === 1 }">
@@ -52,8 +58,7 @@
       </div>
     </div>
     
-    <router-link to="/destination/addNew" class="btn btn-primary mb-3">Add New Destination</router-link>
-
+    <router-link to="/article/addNew" class="btn btn-primary mb-3">Add New Article</router-link>
   </div>
 </template>
 
@@ -61,24 +66,24 @@
 export default {
   data() {
     return {
-      destinations: [],
+      articles: [],
       currentPage: 1,
       itemsPerPage: 5
     };
   },
   computed: {
-    paginatedDestinations() {
+    paginatedArticles() {
       const start = (this.currentPage - 1) * this.itemsPerPage;
       const end = start + this.itemsPerPage;
-      return this.destinations.slice(start, end);
+      return this.articles.slice(start, end);
     },
     totalPages() {
-      return Math.ceil(this.destinations.length / this.itemsPerPage);
+      return Math.ceil(this.articles.length / this.itemsPerPage);
     }
   },
   created() {
-    this.$axios.get('/api/destinations').then((response) => {
-      this.destinations = response.data;
+    this.$axios.get('/api/articles').then((response) => {
+      this.articles = response.data;
     });
   },
   methods: {
@@ -87,19 +92,17 @@ export default {
         this.currentPage = page;
       }
     },
-    deleteDestination(destinationId) {
-      if (confirm("Are you sure you want to delete this destination?")) {
+    deleteArticle(articleId) {
+      if (confirm("Are you sure you want to delete this article?")) {
         this.$axios
-          .delete(`/api/destinations/${destinationId}`)
+          .delete(`/api/articles/${articleId}`)
           .then(() => {
-            this.destinations = this.destinations.filter(d => d.destination_id !== destinationId);
+            alert('Article deleted successfully!');
+            this.articles = this.articles.filter(a => a.article_id !== articleId);
           })
           .catch(err => {
-                  if (err.response && err.response.status === 409) {
-              alert("You cannot delete this destination that is contained in Article!");
-            } else {
-              console.error(err);
-            }
+            console.error('Error deleting article:', err);
+            alert('Error deleting article.');
           });
       }
     }
@@ -108,7 +111,14 @@ export default {
 </script>
 
 <style scoped>
-/* Stilizuj paginaciju */
+/* Style pagination */
+.text-truncate {
+  display: block;
+  max-width: 200px; /* ili neka druga širina koja odgovara tvojoj tabeli */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 .pagination {
   justify-content: center;
   margin-top: 20px;
@@ -123,4 +133,3 @@ export default {
   color: white;
 }
 </style>
-

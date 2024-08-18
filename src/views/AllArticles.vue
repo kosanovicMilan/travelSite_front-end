@@ -20,9 +20,11 @@
           <tbody>
             <tr v-for="article in paginatedArticles" :key="article.article_id">
               <th scope="row">{{ article.article_id }}</th>
+              <td>
               <router-link :to="{ name: 'blog', params: { articleID: article.article_id } }" class = "text-truncate">
                 {{ article.title | capitalize }}
               </router-link>
+              </td>
               <td>{{ article.text }}</td>
               <td>{{ article.created_on | formatDate }}</td>
               <td>{{ article.authorName }}</td>

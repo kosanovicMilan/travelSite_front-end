@@ -2,14 +2,29 @@
     <div>
       <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
-          <router-link :to="{ name: 'home' }" tag="a" class="nav-link fs-3" :class="{ active: this.$router.currentRoute.name === 'home' }">
-            TravelHelper
-          </router-link>
+        
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+              <li class="nav-item">
+                <router-link :to="{ name: 'home' }" tag="a" class="nav-link" :class="{ active: this.$router.currentRoute.name === 'home' }">
+                  Home
+                </router-link>
+              </li>
+
+              <li  class="nav-item">
+                <router-link :to="{ name: 'MostPopular' }" tag="a" class="nav-link" :class="{ active: this.$router.currentRoute.name === 'MostPopular' }">
+                  Most popular
+                </router-link>
+              </li>
+              <li class="nav-item">
+                <router-link :to="{ name: 'AllHomeDestinations' }" tag="a" class="nav-link" :class="{ active: this.$router.currentRoute.name === 'AllHomeDestinations' }">
+                 Available Destinations
+                </router-link>
+              </li>
              
               <li v-if="$user && ($user.type === 'Admin' || $user.type === 'User')" class="nav-item">
               <router-link :to="{name: 'AllDestinations'}" tag="a" class="nav-link" :class="{active: this.$router.currentRoute.name === 'AllDestinations'}">Destinations</router-link>
@@ -27,8 +42,6 @@
                 </router-link>
               </li>
               
-              <li v-if="$user && ($user.type === 'Admin' || $user.type === 'User' || $user.type === '')" class="nav-item">Blog</li>
-
               
             </ul>
             <span v-if="$user && $user.name">Welcome, {{ $user.name }}!</span>
@@ -39,8 +52,6 @@
               <button v-if="$user.name && $user.name.trim() !== ''" class="btn btn-outline-danger me-2" type="submit">Logout</button>
             </form>
   
-            <button v-if="!isLoggedIn && $route.name !== 'LoginPage'" class="btn btn-outline-primary me-2" @click="login">Log In</button>
-
           </div>
         </div>
       </nav>

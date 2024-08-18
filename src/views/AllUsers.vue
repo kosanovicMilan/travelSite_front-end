@@ -18,7 +18,7 @@
             <tbody>
               <tr v-for="(us, index) in paginatedUsers" :key="us.user_id">
                 <td>{{ us.name }}</td>
-                <td>{{ us.surname }}</td>
+                <td>{{ us.surrname }}</td>
                 <td>{{ us.email }}</td>
                 <td>{{ us.type }}</td>
                 <td>{{ us.status }}</td>

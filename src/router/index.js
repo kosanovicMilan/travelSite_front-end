@@ -101,7 +101,32 @@ const routes = [
       authRequired: true,
     },
     component: () => import('../views/AddNewArticle.vue')
-  }
+  },
+  {
+    path: '/mostPopular',
+    name: 'MostPopular',
+    component: () => import('../views/MostPopular.vue')
+  },
+  {
+    path: '/articleByDestination/:destinationName',
+    name: 'ArtByDestName',
+    component: () => import('../views/ArtByDestName.vue')
+  },
+  {
+    path: '/article/:articleId',
+    name: 'ArticleDetails',
+    component: () => import('../views/ArticleDetails.vue')
+  },
+  {
+    path: '/alldestinations',
+    name: 'AllHomeDestinations',
+    component: () => import('../views/AllHomeDestinations.vue')
+  },
+  {
+    path: '/articles/activity/:activityId',
+    name: 'ArticlesByActivity',
+    component: () => import('../views/ArticlesByActivity.vue')
+  },
   
 ]
 
